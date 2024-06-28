@@ -9,6 +9,7 @@ const PointCloudAnimation = () => {
   const [renderer, setRenderer] = useState(null);
   const [points, setPoints] = useState(null);
   const [originalPositions, setOriginalPositions] = useState(null);
+  const [rayLine, setRayLine] = useState(null);
 
   useEffect(() => {
     // Set up the scene
@@ -44,6 +45,12 @@ const PointCloudAnimation = () => {
     camera.position.z = 10;
     const controls = new OrbitControls(camera, renderer.domElement);
 
+    // Create a line for the ray
+    const rayGeometry = new THREE.BufferGeometry();
+    const rayMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
+    const rayLine = new THREE.Line(rayGeometry, rayMaterial);
+    scene.add(rayLine);
+
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
@@ -60,6 +67,7 @@ const PointCloudAnimation = () => {
     setCamera(camera);
     setRenderer(renderer);
     setPoints(points);
+    setRayLine(rayLine);
 
     // Clean up
     return () => {
@@ -69,7 +77,7 @@ const PointCloudAnimation = () => {
 
   // Handle click events
   const handleClick = (event) => {
-    if (!scene || !camera || !renderer || !points) return;
+    if (!scene || !camera || !renderer || !points || !rayLine) return;
 
     const mouse = new THREE.Vector2();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -84,12 +92,24 @@ const PointCloudAnimation = () => {
       const positions = points.geometry.attributes.position.array;
       const clickPoint = intersects[0].point;
 
+      // Update ray line
+      const rayGeometry = new THREE.BufferGeometry().setFromPoints([
+        camera.position,
+        clickPoint
+      ]);
+      rayLine.geometry.dispose();
+      rayLine.geometry = rayGeometry;
+
+      // Make ray visible and start fading
+      rayLine.material.opacity = 1;
+      fadeRay();
+
+      // Apply force to points
       for (let i = 0; i < positions.length; i += 3) {
         const distance = new THREE.Vector3(positions[i], positions[i+1], positions[i+2]).distanceTo(clickPoint);
         
-        // Increase the force by adjusting these parameters
-        const maxDistance = 3; // Decrease this to affect points further away
-        const forceFactor = 1.3; // Increase this for stronger force
+        const maxDistance = 3;
+        const forceFactor = 1.3;
         const force = Math.max(0, 1 - distance / maxDistance) * forceFactor;
 
         positions[i] += (positions[i] - clickPoint.x) * force;
@@ -99,6 +119,22 @@ const PointCloudAnimation = () => {
 
       points.geometry.attributes.position.needsUpdate = true;
     }
+  };
+
+  // Fade ray effect
+  const fadeRay = () => {
+    if (!rayLine) return;
+
+    let opacity = 1;
+    const fadeInterval = setInterval(() => {
+      opacity -= 0.02;
+      if (opacity <= 0) {
+        clearInterval(fadeInterval);
+        rayLine.material.opacity = 0;
+      } else {
+        rayLine.material.opacity = opacity;
+      }
+    }, 50);
   };
 
   // Handle animation
