@@ -4,7 +4,7 @@ import PointCloudAnimation from './PointCloudAnimation';
 function App() {
   return (
     <div className="App">
-      <PointCloudAnimation overlayText="My Custom Point Cloud" />
+      <PointCloudAnimation />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-const PointCloudAnimation = ({ overlayText = "Customizable Overlay Text" }) => {
+const PointCloudAnimation = () => {
   const mountRef = useRef(null);
   const [scene, setScene] = useState(null);
   const [camera, setCamera] = useState(null);
@@ -87,8 +87,9 @@ const PointCloudAnimation = ({ overlayText = "Customizable Overlay Text" }) => {
       for (let i = 0; i < positions.length; i += 3) {
         const distance = new THREE.Vector3(positions[i], positions[i+1], positions[i+2]).distanceTo(clickPoint);
         
-        const maxDistance = 3;
-        const forceFactor = 0.3;
+        // Increase the force by adjusting these parameters
+        const maxDistance = 3; // Decrease this to affect points further away
+        const forceFactor = 1.5; // Increase this for stronger force
         const force = Math.max(0, 1 - distance / maxDistance) * forceFactor;
 
         positions[i] += (positions[i] - clickPoint.x) * force;
@@ -121,29 +122,7 @@ const PointCloudAnimation = ({ overlayText = "Customizable Overlay Text" }) => {
     animate();
   }, [points, originalPositions]);
 
-  return (
-    <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
-      <div 
-        ref={mountRef} 
-        onClick={handleClick} 
-        style={{ width: '100%', height: '100%' }}
-      />
-      <div 
-        style={{
-          position: 'absolute',
-          top: '20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          color: 'white',
-          fontSize: '24px',
-          fontWeight: 'bold',
-          textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
-        }}
-      >
-        {overlayText}
-      </div>
-    </div>
-  );
+  return <div ref={mountRef} onClick={handleClick} style={{ width: '100%', height: '100vh' }} />;
 };
 
 export default PointCloudAnimation;
