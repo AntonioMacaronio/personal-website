@@ -71,32 +71,62 @@ const PointCloudAnimation = () => {
   const handleClick = (event) => {
     if (!scene || !camera || !renderer || !points) return;
 
+    // mouse: THREE.Vector2
+    // Contains the normalized device coordinates of the mouse click
+    // x and y range from -1 to 1, with (0,0) at the center of the screen
     const mouse = new THREE.Vector2();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+    // raycaster: THREE.Raycaster
+    // Used for picking objects in the 3D scene
+    // It casts a ray from the camera through the mouse position
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, camera);
 
+    // intersects: Array<THREE.Intersection>
+    // Contains all objects intersected by the raycaster
+    // Each intersection object includes:
+    // - distance: distance from camera to intersection
+    // - point: THREE.Vector3 of the intersection point
+    // - object: the intersected object (in this case, our points object)
     const intersects = raycaster.intersectObject(points);
 
     if (intersects.length > 0) {
+      // positions: Float32Array
+      // Contains the positions of all points in the point cloud
+      // Structure: [x1, y1, z1, x2, y2, z2, ...]
       const positions = points.geometry.attributes.position.array;
+
+      // clickPoint: THREE.Vector3
+      // The 3D coordinates of the point where the ray intersects the point cloud
       const clickPoint = intersects[0].point;
 
       for (let i = 0; i < positions.length; i += 3) {
+        // distance: number
+        // The Euclidean distance between the current point and the click point
         const distance = new THREE.Vector3(positions[i], positions[i+1], positions[i+2]).distanceTo(clickPoint);
         
-        // Increase the force by adjusting these parameters
-        const maxDistance = 3; // Decrease this to affect points further away
-        const forceFactor = 1.5; // Increase this for stronger force
+        // maxDistance: number
+        // The maximum distance at which a point will be affected by the click
+        const maxDistance = 3;
+
+        // forceFactor: number
+        // A multiplier to control the strength of the force applied to points
+        const forceFactor = 0.3;
+
+        // force: number
+        // The calculated force to apply to the current point
+        // Decreases linearly with distance and is clamped to be non-negative
         const force = Math.max(0, 1 - distance / maxDistance) * forceFactor;
 
+        // Apply the force to update the point's position
         positions[i] += (positions[i] - clickPoint.x) * force;
         positions[i+1] += (positions[i+1] - clickPoint.y) * force;
         positions[i+2] += (positions[i+2] - clickPoint.z) * force;
       }
 
+      // Notify Three.js that the positions have been updated
       points.geometry.attributes.position.needsUpdate = true;
     }
   };
