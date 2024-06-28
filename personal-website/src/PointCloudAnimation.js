@@ -46,8 +46,14 @@ const PointCloudAnimation = () => {
     const controls = new OrbitControls(camera, renderer.domElement);
 
     // Create a line for the ray
+    // Create a line for the ray
     const rayGeometry = new THREE.BufferGeometry();
-    const rayMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
+    const rayMaterial = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0,
+      linewidth: 5,  // Note: linewidth > 1 only works in WebGL 2
+    });
     const rayLine = new THREE.Line(rayGeometry, rayMaterial);
     scene.add(rayLine);
 
@@ -102,14 +108,15 @@ const PointCloudAnimation = () => {
 
       // Make ray visible and start fading
       rayLine.material.opacity = 1;
+      rayLine.material.color.setHex(0xffff00);  // Bright yellow color
       fadeRay();
 
       // Apply force to points
       for (let i = 0; i < positions.length; i += 3) {
         const distance = new THREE.Vector3(positions[i], positions[i+1], positions[i+2]).distanceTo(clickPoint);
         
-        const maxDistance = 3;
-        const forceFactor = 1.3;
+        const maxDistance = 4;
+        const forceFactor = 1.7;
         const force = Math.max(0, 1 - distance / maxDistance) * forceFactor;
 
         positions[i] += (positions[i] - clickPoint.x) * force;
@@ -127,12 +134,15 @@ const PointCloudAnimation = () => {
 
     let opacity = 1;
     const fadeInterval = setInterval(() => {
-      opacity -= 0.02;
+      opacity -= 0.01;
       if (opacity <= 0) {
         clearInterval(fadeInterval);
         rayLine.material.opacity = 0;
       } else {
         rayLine.material.opacity = opacity;
+        // Gradually change color from yellow to white as it fades
+        const hue = opacity * 60 / 360;  // 60 degrees is yellow in HSL
+        rayLine.material.color.setHSL(hue, 1, 0.5);
       }
     }, 50);
   };
@@ -145,9 +155,10 @@ const PointCloudAnimation = () => {
       const positions = points.geometry.attributes.position.array;
 
       for (let i = 0; i < positions.length; i += 3) {
-        positions[i] += (originalPositions[i] - positions[i]) * 0.02;
-        positions[i+1] += (originalPositions[i+1] - positions[i+1]) * 0.02;
-        positions[i+2] += (originalPositions[i+2] - positions[i+2]) * 0.02;
+        const speed = 0.01
+        positions[i] += (originalPositions[i] - positions[i]) * speed;
+        positions[i+1] += (originalPositions[i+1] - positions[i+1]) * speed;
+        positions[i+2] += (originalPositions[i+2] - positions[i+2]) * speed;
       }
 
       points.geometry.attributes.position.needsUpdate = true;
