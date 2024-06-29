@@ -10,6 +10,7 @@ const PointCloudAnimation = () => {
   const [points, setPoints] = useState(null);
   const [originalPositions, setOriginalPositions] = useState(null);
   const [rayLine, setRayLine] = useState(null);
+  const [sphere, setSphere] = useState(null);
 
   useEffect(() => {
     // Set up the scene
@@ -41,11 +42,17 @@ const PointCloudAnimation = () => {
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
+    // Create clickable sphere
+    const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.position.set(0, 0, 0);
+    scene.add(sphere);
+
     // Set up camera and controls
-    camera.position.z = 10;
+    camera.position.z = 15;
     const controls = new OrbitControls(camera, renderer.domElement);
 
-    // Create a line for the ray
     // Create a line for the ray
     const rayGeometry = new THREE.BufferGeometry();
     const rayMaterial = new THREE.LineBasicMaterial({
@@ -74,6 +81,7 @@ const PointCloudAnimation = () => {
     setRenderer(renderer);
     setPoints(points);
     setRayLine(rayLine);
+    setSphere(sphere);
 
     // Clean up
     return () => {
@@ -83,7 +91,7 @@ const PointCloudAnimation = () => {
 
   // Handle click events
   const handleClick = (event) => {
-    if (!scene || !camera || !renderer || !points || !rayLine) return;
+    if (!scene || !camera || !renderer || !points || !rayLine || !sphere) return;
 
     const mouse = new THREE.Vector2();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -92,10 +100,9 @@ const PointCloudAnimation = () => {
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, camera);
 
-    const intersects = raycaster.intersectObject(points);
+    const intersects = raycaster.intersectObjects([sphere, points]);
 
     if (intersects.length > 0) {
-      const positions = points.geometry.attributes.position.array;
       const clickPoint = intersects[0].point;
 
       // Update ray line
@@ -112,6 +119,7 @@ const PointCloudAnimation = () => {
       fadeRay();
 
       // Apply force to points
+      const positions = points.geometry.attributes.position.array;
       for (let i = 0; i < positions.length; i += 3) {
         const distance = new THREE.Vector3(positions[i], positions[i+1], positions[i+2]).distanceTo(clickPoint);
         
@@ -125,6 +133,11 @@ const PointCloudAnimation = () => {
       }
 
       points.geometry.attributes.position.needsUpdate = true;
+
+      // Change sphere color when clicked
+      if (intersects[0].object === sphere) {
+        sphere.material.color.setHex(Math.random() * 0xffffff);
+      }
     }
   };
 
