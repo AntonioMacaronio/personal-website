@@ -155,7 +155,7 @@ const PointCloudAnimation = () => {
       const positions = points.geometry.attributes.position.array;
 
       for (let i = 0; i < positions.length; i += 3) {
-        const speed = 0.01
+        const speed = 0.005
         positions[i] += (originalPositions[i] - positions[i]) * speed;
         positions[i+1] += (originalPositions[i+1] - positions[i+1]) * speed;
         positions[i+2] += (originalPositions[i+2] - positions[i+2]) * speed;
