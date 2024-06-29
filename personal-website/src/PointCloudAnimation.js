@@ -50,7 +50,7 @@ const PointCloudAnimation = () => {
     scene.add(sphere);
 
     // Set up camera and controls
-    camera.position.z = 10;
+    camera.position.z = 15;
     const controls = new OrbitControls(camera, renderer.domElement);
 
     // Create a line for the ray
