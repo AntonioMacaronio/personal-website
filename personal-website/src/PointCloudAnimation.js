@@ -4,13 +4,14 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const WindowedPointCloudAnimation = () => {
   return (
-    <div style={{
-      width: '800px',
-      height: '600px',
-      margin: '20px auto',
-      overflow: 'hidden',
-      position: 'relative'
-    }}>
+    // <div style={{
+    //     width: '800px',
+    //     height: '600px',
+    //     margin: '20px auto',
+    //     overflow: 'hidden',
+    //     position: 'relative'
+    //   }}>
+    <div className="App">
       <PointCloudAnimation />
     </div>
   );
@@ -28,9 +29,11 @@ const PointCloudAnimation = () => {
   useEffect(() => {
     // Set up the scene
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, 800 / 568, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    // const camera = new THREE.PerspectiveCamera(75, 800 / 568, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(800, 568);  // Adjusted to fit the window
+    // renderer.setSize(800, 568);  // Adjusted to fit the window
+    renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current.appendChild(renderer.domElement);
 
     // Create point cloud
@@ -97,16 +100,22 @@ const PointCloudAnimation = () => {
   const handleClick = (event) => {
     if (!scene || !camera || !renderer || !points || !rayLine) return;
 
-    const rect = event.currentTarget.getBoundingClientRect();
+    const canvas = renderer.domElement;
+    const rect = canvas.getBoundingClientRect();
     const mouse = new THREE.Vector2();
-    mouse.x = ((event.clientX - rect.left) / 800) * 2 - 1;
-    mouse.y = -((event.clientY - rect.top) / 568) * 2 + 1;
+    mouse.x = ((event.clientX - rect.left) / canvas.clientWidth) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / canvas.clientHeight) * 2 + 1;
+
+    console.log('Mouse position:', mouse);
 
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, camera);
 
     const rayStart = camera.position.clone();
     const rayDirection = raycaster.ray.direction;
+
+    console.log('Ray start:', rayStart);
+    console.log('Ray direction:', rayDirection);
 
     const rayEnd = rayStart.clone().add(rayDirection.multiplyScalar(20));
     const rayGeometry = new THREE.BufferGeometry().setFromPoints([rayStart, rayEnd]);
@@ -118,20 +127,24 @@ const PointCloudAnimation = () => {
     fadeRay();
 
     const positions = points.geometry.attributes.position.array;
+    let maxForce = 0;
     for (let i = 0; i < positions.length; i += 3) {
       const point = new THREE.Vector3(positions[i], positions[i+1], positions[i+2]);
-      
       const closestPoint = new THREE.Vector3();
       closestPoint.subVectors(point, rayStart);
       const rayPointProjection = closestPoint.dot(rayDirection);
       closestPoint.copy(rayDirection).multiplyScalar(rayPointProjection).add(rayStart);
       
       const distance = point.distanceTo(closestPoint);
-      
-      const maxDistance = 0.5;
-      const forceFactor = 0.3;
+    //   if (distance < 10) {
+    //     console.log('distance:', distance)
+    //   }
+      const maxDistance = 5;
+      const forceFactor = 3;
       
       const force = Math.max(0, 1 - distance / maxDistance) * forceFactor;
+      console.log(`Point ${i/3}: distance = ${distance}, force = ${force}`);
+      maxForce = Math.max(maxForce, force);
 
       const forceDirection = new THREE.Vector3().subVectors(point, closestPoint).normalize();
 
@@ -140,7 +153,10 @@ const PointCloudAnimation = () => {
       positions[i+2] += forceDirection.z * force;
     }
 
+    console.log('Max force applied:', maxForce);
+
     points.geometry.attributes.position.needsUpdate = true;
+    console.log('Geometry updated');
   };
 
   const fadeRay = () => {
