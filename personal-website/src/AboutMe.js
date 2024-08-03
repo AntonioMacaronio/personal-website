@@ -15,16 +15,12 @@ const AboutMe = () => {
     <div className={`about-me ${isVisible ? 'visible' : ''}`}>
       <h1>About Me</h1>
       <p>
-        Hey y'all! I'm Anthony Zhang, a Computer Science and Applied Mathematics student at UC Berkeley. My interests include computer graphics, 3D reconstruction, photorealistic rendering, and software engineering.
+        Hey y'all! I'm Anthony Zhang, a Computer Science and Applied Mathematics student at UC Berkeley. My interests include computer graphics, 3D reconstruction, photorealistic rendering, machine learning, and making software fast.
       </p>
       <p>
         My experience ranges from undergraduate research at Berkeley AI Research to internships 
         at leading tech companies like Square. I love tackling complex problems and turning 
         innovative ideas into reality.
-      </p>
-      <p>
-        When I'm not coding, you can find me exploring the latest advancements in AI, 
-        collaborating on open-source projects, or mentoring fellow students in computer science.
       </p>
       <Link to="/">Back to Minigame</Link>
     </div>
