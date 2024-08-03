@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { useNavigate } from 'react-router-dom';
 
 const PointCloudAnimation = () => {
   const mountRef = useRef(null);
@@ -11,6 +12,8 @@ const PointCloudAnimation = () => {
   const [originalPositions, setOriginalPositions] = useState(null);
   const [rayLine, setRayLine] = useState(null);
   const [sphere, setSphere] = useState(null);
+  const [hitCount, setHitCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Set up the scene
@@ -85,9 +88,15 @@ const PointCloudAnimation = () => {
 
     // Clean up
     return () => {
-      mountRef.current.removeChild(renderer.domElement);
-    };
-  }, []);
+        if (mountRef.current && renderer.domElement && mountRef.current.contains(renderer.domElement)) {
+          mountRef.current.removeChild(renderer.domElement);
+        }
+        renderer.dispose();
+        if (scene) {
+          scene.clear();
+        }
+      };
+    }, []);
 
   // Handle click events
   const handleClick = (event) => {
@@ -136,7 +145,13 @@ const PointCloudAnimation = () => {
 
       // Change sphere color when clicked
       if (intersects[0].object === sphere) {
+        setHitCount(hitCount + 1);
+        console.log(hitCount);
         sphere.material.color.setHex(Math.random() * 0xffffff);
+        if (hitCount === 5) {
+            console.log("Redirecting");
+            navigate('/home');
+        }
       }
     }
   };
