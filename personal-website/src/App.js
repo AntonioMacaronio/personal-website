@@ -1,8 +1,8 @@
 import React from 'react';
 import PointCloudAnimation from './PointCloudAnimation';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import AboutMe from './AboutMe';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function Minigame() {
   return (
