@@ -1,39 +1,48 @@
 .about-me {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-}
+  }
   
-.about-me.visible {
+  .about-me.visible {
     opacity: 1;
     transform: translateY(0);
-}
+  }
   
-.about-me h1 {
+  .about-me-content {
+    display: flex;
+    gap: 40px;
+  }
+  
+  .about-me-text {
+    flex: 1;
+  }
+  
+  .about-me h1 {
     color: #333;
     margin-bottom: 20px;
-}
+  }
   
-.about-me p {
+  .about-me p {
     color: #666;
     line-height: 1.6;
     margin-bottom: 15px;
-}
+  }
   
-.about-me p a {
+  .about-me a {
     color: #007bff;
-    text-decoration: underline;
+    text-decoration: none;
     transition: color 0.3s ease;
-}
-
-.about-me p a:hover {
-    color: #0056b3;
-}
+  }
   
-.about-me > a {
+  .about-me a:hover {
+    color: #0056b3;
+  }
+  
+  .about-me .back-link {
     display: inline-block;
     margin-top: 20px;
     padding: 10px 15px;
@@ -42,8 +51,37 @@
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-}
+  }
   
-.about-me > a:hover {
+  .about-me .back-link:hover {
     background-color: #0056b3;
-}
+  }
+  
+  .profile-pic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px;
+  }
+  
+  .profile-pic {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+  
+  .social-links {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .social-links a {
+    color: #333;
+    transition: color 0.3s ease;
+  }
+  
+  .social-links a:hover {
+    color: #007bff;
+  }
