@@ -30,7 +30,7 @@ const AboutMe = () => {
             Before that, I was a software engineer intern at Collective Health developing backend APIs and a research assistant at Shanghai Jiao Tong University working on medical imaging.
           </p>
           
-          <Link to="/">Back to Minigame</Link>
+          <Link className="back-link" to="/">Back to Minigame</Link>
         </div>
       </div>
     </div>
