@@ -12,8 +12,13 @@ const PointCloudAnimation = () => {
   const [originalPositions, setOriginalPositions] = useState(null);
   const [rayLine, setRayLine] = useState(null);
   const [sphere, setSphere] = useState(null);
-  // const [hitCount, setHitCount] = useState(0);
   const hitCount = useRef(0);
+  
+  
+  const [isOrbiting, setIsOrbiting] = useState(true); // State to track if we're in orbit mode
+  const angleRef = useRef(0); // Track the current angle of orbit
+  const controlsRef = useRef(null); // Store the orbit controls for reference
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +61,9 @@ const PointCloudAnimation = () => {
     // Set up camera and controls
     camera.position.z = 15;
     const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;  // Smooth camera movement
+    controls.dampingFactor = 0.03;
+    controlsRef.current = controls;
 
     // Create a line for the ray
     const rayGeometry = new THREE.BufferGeometry();
