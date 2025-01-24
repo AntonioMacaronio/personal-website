@@ -12,7 +12,8 @@ const PointCloudAnimation = () => {
   const [originalPositions, setOriginalPositions] = useState(null);
   const [rayLine, setRayLine] = useState(null);
   const [sphere, setSphere] = useState(null);
-  const [hitCount, setHitCount] = useState(0);
+  // const [hitCount, setHitCount] = useState(0);
+  const hitCount = useRef(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -86,7 +87,7 @@ const PointCloudAnimation = () => {
     setRayLine(rayLine);
     setSphere(sphere);
 
-    // Clean up
+    // Clean up function that a useEffect function returns
     return () => {
         if (mountRef.current && renderer.domElement && mountRef.current.contains(renderer.domElement)) {
           mountRef.current.removeChild(renderer.domElement);
@@ -145,10 +146,10 @@ const PointCloudAnimation = () => {
 
       // Change sphere color when clicked
       if (intersects[0].object === sphere) {
-        setHitCount(hitCount + 1);
-        console.log(hitCount);
+        hitCount.current = hitCount.current + 1;
+        console.log(hitCount.current);
         sphere.material.color.setHex(Math.random() * 0xffffff);
-        if (hitCount === 5) {
+        if (hitCount.current === 5) {
             console.log("Redirecting");
             navigate('/home');
         }
