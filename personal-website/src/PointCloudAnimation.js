@@ -10,7 +10,7 @@ const PointCloudAnimation = () => {
   const [renderer, setRenderer] = useState(null);
   const [points, setPoints] = useState(null);
   const [originalPositions, setOriginalPositions] = useState(null);
-  const [rayLine, setRayLine] = useState(null);
+  const [rays, setRays] = useState([]);
   const [sphere, setSphere] = useState(null);
   const hitCount = useRef(0);
   
@@ -70,17 +70,6 @@ const PointCloudAnimation = () => {
     controls.dampingFactor = 0.05;
     controlsRef.current = controls;
 
-    // Create a line for the ray
-    const rayGeometry = new THREE.BufferGeometry();
-    const rayMaterial = new THREE.LineBasicMaterial({
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0,
-      linewidth: 5,  // Note: linewidth > 1 only works in WebGL 2
-    });
-    const rayLine = new THREE.Line(rayGeometry, rayMaterial);
-    scene.add(rayLine);
-
     // Animation loop
     const animate = () => {
         requestAnimationFrame(animate);
@@ -133,7 +122,6 @@ const PointCloudAnimation = () => {
     setCamera(camera);
     setRenderer(renderer);
     setPoints(points);
-    setRayLine(rayLine);
     setSphere(sphere);
 
     // Clean up function that a useEffect function returns
@@ -146,6 +134,10 @@ const PointCloudAnimation = () => {
         }
         renderer.dispose();
         if (scene) {
+          // Remove all rays
+          rays.forEach(ray => {
+            scene.remove(ray);
+          });
           scene.clear();
         }
       };
@@ -153,33 +145,62 @@ const PointCloudAnimation = () => {
 
   // Handle click events
   const handleRayShot = (event) => {
-    if (!scene || !camera || !renderer || !points || !rayLine || !sphere) return;
-
+    if (!scene || !camera || !renderer || !points || !sphere) return;
+  
     const mouse = new THREE.Vector2();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
+  
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, camera);
-
+  
     const intersects = raycaster.intersectObjects([sphere, points]);
-
+  
     if (intersects.length > 0) {
       const clickPoint = intersects[0].point;
-
-      // Update ray line
-      const rayGeometry = new THREE.BufferGeometry().setFromPoints([
-        camera.position,
-        clickPoint
-      ]);
-      rayLine.geometry.dispose();
-      rayLine.geometry = rayGeometry;
-
-      // Make ray visible and start fading
-      rayLine.material.opacity = 1;
-      rayLine.material.color.setHex(0xffff00);  // Bright yellow color
-      fadeRay();
-
+  
+      // Create a new ray cylinder for each shot
+      const rayGeometry = new THREE.CylinderGeometry(0.05, 0.05, 1, 8);
+      // Rotate cylinder so its length is along the z-axis
+      rayGeometry.rotateX(Math.PI / 2);
+      // Move the origin to the start of the cylinder instead of its center
+      rayGeometry.translate(0, 0, 0.5);
+      
+      const rayMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffff00,
+        transparent: true,
+        opacity: 1
+      });
+      
+      const newRay = new THREE.Mesh(rayGeometry, rayMaterial);
+      scene.add(newRay);
+      
+      // Calculate position offset to the right of camera
+      const cameraRight = new THREE.Vector3(1, 0, 0);
+      cameraRight.applyQuaternion(camera.quaternion);
+      cameraRight.multiplyScalar(1.5); // Offset distance to the right
+      
+      const rayStart = camera.position.clone().add(cameraRight);
+      
+      // Calculate direction and distance to click point
+      const direction = new THREE.Vector3().subVectors(clickPoint, rayStart).normalize();
+      const distance = rayStart.distanceTo(clickPoint);
+      
+      // Position the ray at the starting point
+      newRay.position.copy(rayStart);
+      
+      // Scale the ray to match the distance to the target
+      newRay.scale.set(0.2, 0.2, distance); // Make ray thicker by scaling x and y
+      
+      // Orient the ray to point at the target
+      newRay.lookAt(clickPoint);
+      
+      // Add to our tracked rays
+      setRays(prevRays => [...prevRays, newRay]);
+      
+      // Start fading the ray
+      fadeRay(newRay);
+  
       // Apply force to points
       const positions = points.geometry.attributes.position.array;
       for (let i = 0; i < positions.length; i += 3) {
@@ -188,42 +209,44 @@ const PointCloudAnimation = () => {
         const maxDistance = 4;
         const forceFactor = 1.7;
         const force = Math.max(0, 1 - distance / maxDistance) * forceFactor;
-
+  
         positions[i] += (positions[i] - clickPoint.x) * force;
         positions[i+1] += (positions[i+1] - clickPoint.y) * force;
         positions[i+2] += (positions[i+2] - clickPoint.z) * force;
       }
-
+  
       points.geometry.attributes.position.needsUpdate = true;
-
+  
       // Change sphere color when clicked
       if (intersects[0].object === sphere) {
         hitCount.current = hitCount.current + 1;
         console.log(hitCount.current);
         sphere.material.color.setHex(Math.random() * 0xffffff);
         if (hitCount.current === 5) {
-            console.log("Redirecting");
-            navigate('/home');
+          console.log("Redirecting");
+          navigate('/home');
         }
       }
     }
   };
 
   // Fade ray effect
-  const fadeRay = () => {
-    if (!rayLine) return;
-
+  const fadeRay = (ray) => {
     let opacity = 1;
     const fadeInterval = setInterval(() => {
       opacity -= 0.01;
       if (opacity <= 0) {
         clearInterval(fadeInterval);
-        rayLine.material.opacity = 0;
+        ray.material.opacity = 0;
+        // Remove the ray from the scene after it's faded out
+        scene.remove(ray);
+        // Remove from our tracked rays array
+        setRays(prevRays => prevRays.filter(r => r !== ray));
       } else {
-        rayLine.material.opacity = opacity;
+        ray.material.opacity = opacity;
         // Gradually change color from yellow to white as it fades
         const hue = opacity * 60 / 360;  // 60 degrees is yellow in HSL
-        rayLine.material.color.setHSL(hue, 1, 0.5);
+        ray.material.color.setHSL(hue, 1, 0.5);
       }
     }, 50);
   };
