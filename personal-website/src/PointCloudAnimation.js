@@ -20,6 +20,8 @@ const PointCloudAnimation = () => {
   const controlsRef = useRef(null);                         // Store the orbit controls for reference
   const mouseDownPositionRef = useRef(null);                // Helps us distinguish between clicks and drags
   const orbitTimeoutRef = useRef(null);
+  const cameraRadiusRef = useRef(25);    // Store current camera distance from center
+  const cameraYRef = useRef(0);          // Store current camera Y position
 
   const navigate = useNavigate();
 
@@ -28,7 +30,7 @@ const PointCloudAnimation = () => {
     // Set up the scene
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 0, 15);
+    camera.position.set(0, 0, 25);
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current.appendChild(renderer.domElement);
@@ -65,7 +67,7 @@ const PointCloudAnimation = () => {
     // Set up camera and controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;  // Smooth camera movement
-    controls.dampingFactor = 0.03;
+    controls.dampingFactor = 0.05;
     controlsRef.current = controls;
 
     // Create a line for the ray
@@ -81,24 +83,46 @@ const PointCloudAnimation = () => {
 
     // Animation loop
     const animate = () => {
-      requestAnimationFrame(animate);
-      if (isOrbitingRef.current) {
-        // Update orbital position when in orbit mode
-        angleRef.current += 0.001;  // Controls orbit speed
-
-        const radius = 15;  // Distance from center
-        const targetX = radius * Math.cos(angleRef.current);
-        const targetZ = radius * Math.sin(angleRef.current);
+        requestAnimationFrame(animate);
         
-        // Smooth transition to new position
-        camera.position.x += (targetX - camera.position.x) * 0.05;
-        camera.position.z += (targetZ - camera.position.z) * 0.05;
+        if (isOrbitingRef.current) {
+          // Only increment angle when in orbit mode
+          angleRef.current += 0.001;  // Controls orbit speed
+      
+          // Get current camera parameters (before we try to move it)
+          const currentPos = camera.position.clone();
+          const distanceFromCenter = Math.sqrt(
+            currentPos.x * currentPos.x + 
+            currentPos.z * currentPos.z
+          );
+          
+          // Use the current distance as the radius (preserves zoom level)
+          // Only update the stored radius if it's not an extreme value
+          if (distanceFromCenter > 2 && distanceFromCenter < 50) {
+            cameraRadiusRef.current = distanceFromCenter;
+          }
+          
+          // Store current Y position (preserves up/down camera movement)
+          cameraYRef.current = currentPos.y;
+          
+          // Calculate new position on orbital path using current radius and Y
+          const radius = cameraRadiusRef.current;
+          const targetX = radius * Math.cos(angleRef.current);
+          const targetZ = radius * Math.sin(angleRef.current);
+          
+          // Smooth transition to new position
+          camera.position.x += (targetX - camera.position.x) * 0.05;
+          camera.position.z += (targetZ - camera.position.z) * 0.05;
+          
+          // Maintain Y position with smooth transition
+          camera.position.y += (cameraYRef.current - camera.position.y) * 0.05;
+          
+          camera.lookAt(0, 0, 0);  // Always look at center
+        }
         
-        camera.lookAt(0, 0, 0);  // Always look at center
-      }
-      controls.update();
-      renderer.render(scene, camera);
-    };
+        controls.update();
+        renderer.render(scene, camera);
+      };
     animate();
 
     // Store the original positions
@@ -218,7 +242,9 @@ const PointCloudAnimation = () => {
     isOrbitingRef.current = false;
   };
 
-  const handleMouseUp = (event) => {
+// When resuming orbit mode, set angle based on current position
+// Update the handleMouseUp function
+const handleMouseUp = (event) => {
     // Only shoot a ray if the mouse hasn't moved much (it was a click, not a drag)
     const movementThreshold = 5;  // pixels
     const movement = Math.abs(event.clientX - mouseDownPositionRef.current.x) +
@@ -230,8 +256,14 @@ const PointCloudAnimation = () => {
     
     // Resume orbital motion
     orbitTimeoutRef.current = setTimeout(() => {
+      // Set angle based on current camera position before resuming orbit
+      if (camera) {
+        // Calculate the current angle based on camera position
+        angleRef.current = Math.atan2(camera.position.z, camera.position.x);
+      }
       isOrbitingRef.current = true;
     }, 1500);
+    
     mouseDownPositionRef.current = null;
   };
 
