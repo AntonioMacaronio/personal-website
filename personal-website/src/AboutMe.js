@@ -14,11 +14,10 @@ const AboutMe = () => {
   return (
     <div className={`about-me ${isVisible ? 'visible' : ''}`}>
       <div className="about-me-content">
-        <ProfilePic />
         <div className="about-me-text">
-          <h1>About Me</h1>
+          <h1>Anthony Zhang</h1>
           <p>
-            Hey y'all! I'm Anthony Zhang, a Computer Science and Applied Mathematics student at UC Berkeley. My interests include computer graphics, 3D reconstruction, photorealistic rendering, machine learning, and making software fast.
+            Hey y'all! I'm an EECS Master's student at UC Berkeley advised by  <a href="https://people.eecs.berkeley.edu/~kanazawa/">Angjoo Kanazawa</a>. My interests include computer graphics, 3D computer vision, scene reconstruction, machine learning, and making software fast.
           </p>
           <p>
             Currently, I'm a contributor and developer for <a href="https://docs.nerf.studio/">Nerfstudio</a>, an open source project for developing and researching Neural Radiance Fields and Gaussian Splatting. <a href="https://docs.nerf.studio/">Nerfstudio</a> is maintained by KAIR under Berkeley AI Research (BAIR) and other community contributors!
@@ -29,8 +28,91 @@ const AboutMe = () => {
           <p>
             Before that, I was a software engineer intern at Collective Health developing backend APIs and a research assistant at Shanghai Jiao Tong University working on medical imaging.
           </p>
-          
+        </div>
+        <div className="about-me-sidebar">
+          <ProfilePic />
           <Link className="back-link" to="/">Back to Minigame</Link>
+        </div>
+      </div>
+      
+      <div className="research-container">
+        <h2>Research <span style={{fontSize: '0.6em', opacity: 0.7}}>⚙️ under construction ⚙️</span></h2>
+        <div className="research-section">
+          <div className="publication-block">
+            <div className="publication-thumbnail">
+              <img src={process.env.PUBLIC_URL + '/VideoMimicThumbnail.png'} alt="VideoMimic thumbnail" />
+            </div>
+            <div className="publication-content">
+              <h3 className="publication-title">
+                VideoMimic: Visual Imitation Enables Contextual Humanoid Control
+              </h3>
+              <div className="publication-authors">
+              Arthur Allshire*, Hongsuk Choi*, Junyi Zhang*, David McAllister*, <b>Anthony Zhang</b>, Chung Min Kim,
+              Trevor Darrell, Pieter Abbeel, Jitendra Malik, Angjoo Kanazawa
+              </div>
+              <div className="publication-venue">
+                ArXiv 2025
+              </div>
+              <div className="publication-links">
+                <a href="https://arxiv.org/abs/2505.03729" target="_blank" rel="noopener noreferrer">Paper</a>
+                <span className="link-separator">|</span>
+                <a href="https://videomimic.net/" target="_blank" rel="noopener noreferrer">Website</a>
+              </div>
+              <p className="publication-description">
+                A Real2Sim2Real pipeline for learning humanoid control from video demonstrations using visual imitation learning.
+              </p>
+            </div>
+          </div>
+
+          <div className="publication-block">
+            <div className="publication-thumbnail">
+              <img src={process.env.PUBLIC_URL + '/PodThumbnail.png'} alt="Predict-Optimize-Distill thumbnail" />
+            </div>
+            <div className="publication-content">
+              <h3 className="publication-title">
+                Predict-Optimize-Distill: Self-Improving Cycle for 4D Object Understanding
+              </h3>
+              <div className="publication-authors">
+              Mingxuan Wu*, Huang Huang*,  Justin Kerr,  Chung Min Kim, <b>Anthony Zhang</b>, Brent Yi, Angjoo Kanazawa
+              </div>
+              <div className="publication-venue">
+                ArXiv 2025
+              </div>
+              <div className="publication-links">
+                <a href="https://arxiv.org/abs/2504.17441" target="_blank" rel="noopener noreferrer">Paper</a>
+                <span className="link-separator">|</span>
+                <a href="https://predict-optimize-distill.github.io/pod.github.io/" target="_blank" rel="noopener noreferrer">Website</a>
+              </div>
+              <p className="publication-description">
+                A self-improving framework for 4D object understanding through prediction, optimization, and distillation cycles.
+              </p>
+            </div>
+          </div>
+
+          <div className="publication-block">
+            <div className="publication-thumbnail">
+              <img src={process.env.PUBLIC_URL + '/HSfMThumbnail.png'} alt="HSfM thumbnail" />
+            </div>
+            <div className="publication-content">
+              <h3 className="publication-title">
+                HSfM: Reconstructing People, Places, and Cameras
+              </h3>
+              <div className="publication-authors">
+              Lea Müller*, Hongsuk Choi*, <b>Anthony Zhang</b>, Brent Yi, Jitendra Malik, Angjoo Kanazawa
+              </div>
+              <div className="publication-venue">
+                CVPR 2025 (Highlight)
+              </div>
+              <div className="publication-links">
+                <a href="https://arxiv.org/abs/2412.17806" target="_blank" rel="noopener noreferrer">Paper</a>
+                <span className="link-separator">|</span>
+                <a href="https://muelea.github.io/hsfm/" target="_blank" rel="noopener noreferrer">Website</a>
+              </div>
+              <p className="publication-description">
+                A hierarchical structure-from-motion approach for reconstructing people, places, and cameras from video sequences.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
