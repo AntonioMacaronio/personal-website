@@ -34,17 +34,17 @@ const AboutMe = () => {
           <div className="research-section">
             <div className="publication">
               <a href="https://arxiv.org/abs/2505.03729" target="_blank" rel="noopener noreferrer">
-                InstantSplat: Sparse-view SfM-free Gaussian Splatting in Seconds
+                VideoMimic: Visual Imitation Enables Contextual Humanoid Control
               </a>
             </div>
             <div className="publication">
               <a href="https://arxiv.org/abs/2504.17441" target="_blank" rel="noopener noreferrer">
-                GS-LRM: Large Reconstruction Model for 3D Gaussian Splatting
+              Predict-Optimize-Distill: Self-Improving Cycle for 4D Object Understanding
               </a>
             </div>
             <div className="publication">
               <a href="https://arxiv.org/abs/2412.17806" target="_blank" rel="noopener noreferrer">
-                LangSplat: Language Gaussian Splatting
+                HSfM: Reconstructing People, Places, and Cameras
               </a>
             </div>
           </div>
