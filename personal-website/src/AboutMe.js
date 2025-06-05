@@ -30,6 +30,25 @@ const AboutMe = () => {
             Before that, I was a software engineer intern at Collective Health developing backend APIs and a research assistant at Shanghai Jiao Tong University working on medical imaging.
           </p>
           
+          <h2>Research</h2>
+          <div className="research-section">
+            <div className="publication">
+              <a href="https://arxiv.org/abs/2505.03729" target="_blank" rel="noopener noreferrer">
+                InstantSplat: Sparse-view SfM-free Gaussian Splatting in Seconds
+              </a>
+            </div>
+            <div className="publication">
+              <a href="https://arxiv.org/abs/2504.17441" target="_blank" rel="noopener noreferrer">
+                GS-LRM: Large Reconstruction Model for 3D Gaussian Splatting
+              </a>
+            </div>
+            <div className="publication">
+              <a href="https://arxiv.org/abs/2412.17806" target="_blank" rel="noopener noreferrer">
+                LangSplat: Language Gaussian Splatting
+              </a>
+            </div>
+          </div>
+          
           <Link className="back-link" to="/">Back to Minigame</Link>
         </div>
       </div>
