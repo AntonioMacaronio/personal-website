@@ -126,7 +126,7 @@
     display: flex;
     gap: 20px;
     margin-bottom: 10px;
-    padding: 20px;
+    padding: 15px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background-color: #fafafa;
@@ -139,7 +139,7 @@
   
   .publication-thumbnail {
     flex-shrink: 0;
-    width: 200px;
+    width: 280px;
     height: 150px;
     overflow: hidden;
     border-radius: 6px;
@@ -149,7 +149,7 @@
   .publication-thumbnail img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
   
   .publication-content {
@@ -174,7 +174,7 @@
   }
   
   .publication-venue {
-    color: #007bff;
+    color: #000000;
     font-weight: 500;
     font-size: 0.9em;
   }

@@ -50,11 +50,8 @@ const AboutMe = () => {
               Arthur Allshire*, Hongsuk Choi*, Junyi Zhang*, David McAllister*, <b>Anthony Zhang</b>, Chung Min Kim,
               Trevor Darrell, Pieter Abbeel, Jitendra Malik, Angjoo Kanazawa
               </div>
-              <div className="publication-venue">
-                ArXiv 2025
-              </div>
               <div className="publication-links">
-                <a href="https://arxiv.org/abs/2505.03729" target="_blank" rel="noopener noreferrer">Paper</a>
+                <a href="https://arxiv.org/abs/2505.03729" target="_blank" rel="noopener noreferrer">Paper - ArXiv 2025</a>
                 <span className="link-separator">|</span>
                 <a href="https://videomimic.net/" target="_blank" rel="noopener noreferrer">Website</a>
               </div>
@@ -75,11 +72,8 @@ const AboutMe = () => {
               <div className="publication-authors">
               Mingxuan Wu*, Huang Huang*,  Justin Kerr,  Chung Min Kim, <b>Anthony Zhang</b>, Brent Yi, Angjoo Kanazawa
               </div>
-              <div className="publication-venue">
-                ArXiv 2025
-              </div>
               <div className="publication-links">
-                <a href="https://arxiv.org/abs/2504.17441" target="_blank" rel="noopener noreferrer">Paper</a>
+                <a href="https://arxiv.org/abs/2504.17441" target="_blank" rel="noopener noreferrer">Paper - ArXiv 2025</a>
                 <span className="link-separator">|</span>
                 <a href="https://predict-optimize-distill.github.io/pod.github.io/" target="_blank" rel="noopener noreferrer">Website</a>
               </div>
@@ -100,11 +94,8 @@ const AboutMe = () => {
               <div className="publication-authors">
               Lea Müller*, Hongsuk Choi*, <b>Anthony Zhang</b>, Brent Yi, Jitendra Malik, Angjoo Kanazawa
               </div>
-              <div className="publication-venue">
-                CVPR 2025 (Highlight)
-              </div>
               <div className="publication-links">
-                <a href="https://arxiv.org/abs/2412.17806" target="_blank" rel="noopener noreferrer">Paper</a>
+                <a href="https://arxiv.org/abs/2412.17806" target="_blank" rel="noopener noreferrer">Paper - CVPR 2025 (Highlight)</a>
                 <span className="link-separator">|</span>
                 <a href="https://muelea.github.io/hsfm/" target="_blank" rel="noopener noreferrer">Website</a>
               </div>
