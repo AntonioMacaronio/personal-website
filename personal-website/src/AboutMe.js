@@ -100,7 +100,7 @@ const AboutMe = () => {
                 <a href="https://muelea.github.io/hsfm/" target="_blank" rel="noopener noreferrer">Website</a>
               </div>
               <p className="publication-description">
-                A hierarchical structure-from-motion approach for reconstructing people, places, and cameras from video sequences.
+                A joint optimization framework to estimate 3D human poses and their shape, scene pointmaps, and camera poses from multiview image captures.
               </p>
             </div>
           </div>
