@@ -17,16 +17,13 @@ const AboutMe = () => {
         <div className="about-me-text">
           <h1>Anthony Zhang</h1>
           <p>
-            Hey y'all! I'm an EECS Master's student at UC Berkeley advised by  <a href="https://people.eecs.berkeley.edu/~kanazawa/">Angjoo Kanazawa</a>. My interests include computer graphics, 3D computer vision, scene reconstruction, machine learning, and making software fast.
+            I'm an EECS Master's student at UC Berkeley advised by  <a href="https://people.eecs.berkeley.edu/~kanazawa/">Angjoo Kanazawa</a>. My interests include computer graphics, 3D computer vision, scene reconstruction, machine learning, and making software fast.
           </p>
           <p>
-            Currently, I'm a contributor and developer for <a href="https://docs.nerf.studio/">Nerfstudio</a>, an open source project for developing and researching Neural Radiance Fields and Gaussian Splatting. <a href="https://docs.nerf.studio/">Nerfstudio</a> is maintained by KAIR under Berkeley AI Research (BAIR) and other community contributors!
+            Currently, I'm a contributor and developer for <a href="https://docs.nerf.studio/">Nerfstudio</a>, an open source project in the Berkeley AI Research (BAIR) lab for developing and  3D reconstruction methods such as Neural Radiance Fields and Gaussian Splatting. 
           </p>
           <p>
             Previously, I was a software engineer intern at Square where I worked on customer platform infrastructure and internal microservices. 
-          </p>
-          <p>
-            Before that, I was a software engineer intern at Collective Health developing backend APIs and a research assistant at Shanghai Jiao Tong University working on medical imaging.
           </p>
         </div>
         <div className="about-me-sidebar">
