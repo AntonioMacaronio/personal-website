@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { Github, Linkedin, Mail, FileText } from 'lucide-react';
 
 const ProfilePic = () => {
   return (
@@ -18,6 +18,9 @@ const ProfilePic = () => {
         </a>
         <a href="mailto:anthony_zhang1234@berkeley.edu">
           <Mail size={24} />
+        </a>
+        <a href={process.env.PUBLIC_URL + '/resume.pdf'} target="_blank" rel="noopener noreferrer">
+          <FileText size={24} />
         </a>
       </div>
     </div>
