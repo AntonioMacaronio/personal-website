@@ -48,7 +48,7 @@ const AboutMe = () => {
               Trevor Darrell, Pieter Abbeel, Jitendra Malik, Angjoo Kanazawa
               </div>
               <div className="publication-links">
-                <a href="https://arxiv.org/abs/2505.03729" target="_blank" rel="noopener noreferrer">Paper - ArXiv 2025</a>
+                <a href="https://arxiv.org/abs/2505.03729" target="_blank" rel="noopener noreferrer">Paper - CoRL 2025 Best Student Paper Award</a>
                 <span className="link-separator">|</span>
                 <a href="https://videomimic.net/" target="_blank" rel="noopener noreferrer">Website</a>
               </div>
