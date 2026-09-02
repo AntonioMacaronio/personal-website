@@ -20,10 +20,7 @@ const AboutMe = () => {
             I'm a PhD student at UT Austin and a recipient of the <a href="https://www.nsfgrfp.org/" target="_blank" rel="noopener noreferrer">NSF Graduate Research Fellowship (GRFP)</a>. I obtained my Bachelor's and Master's from UC Berkeley, advised by <a href="https://people.eecs.berkeley.edu/~kanazawa/">Angjoo Kanazawa</a>. My interests include computer graphics, 3D computer vision, scene reconstruction, human motion/humanoid robotics, and machine learning.
           </p>
           <p>
-            Currently, I'm an Applied Scientist intern at Amazon's Frontier Intelligence and Robotics Lab working on humanoid robotics. I'm also a contributor and developer for <a href="https://docs.nerf.studio/">Nerfstudio</a>, an open source project in the Berkeley AI Research (BAIR) lab for developing and  3D reconstruction methods such as Neural Radiance Fields and Gaussian Splatting. 
-          </p>
-          <p>
-            Previously, I was a software engineer intern at Square where I worked on customer platform infrastructure and internal microservices. 
+            Currently, I'm an Applied Scientist intern at Amazon's Frontier Intelligence and Robotics Lab working on humanoid robotics.
           </p>
         </div>
         <div className="about-me-sidebar">
@@ -83,8 +80,7 @@ const AboutMe = () => {
               <div className="publication-links">
                 <a href="https://videomimic.net/" target="_blank" rel="noopener noreferrer">Website</a>
                 <span className="link-separator">|</span>
-                <a href="https://arxiv.org/abs/2505.03729" target="_blank" rel="noopener noreferrer">Paper - CoRL 2025 Best Student Paper Award</a>
-                <span className="new-badge">NEW</span>
+                <a href="https://arxiv.org/abs/2505.03729" target="_blank" rel="noopener noreferrer">Paper - CoRL 2025 (Best Student Paper Award)</a>
               </div>
               <p className="publication-description">
                 A Real2Sim2Real pipeline for learning humanoid control from video demonstrations using visual imitation learning.
