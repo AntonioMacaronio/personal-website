@@ -17,7 +17,7 @@ const AboutMe = () => {
         <div className="about-me-text">
           <h1>Anthony Zhang</h1>
           <p>
-            I'm an EECS Master's student at UC Berkeley advised by <a href="https://people.eecs.berkeley.edu/~kanazawa/">Angjoo Kanazawa</a>. My interests include computer graphics, 3D computer vision, scene reconstruction, human motion/humanoid robotics, and machine learning.
+            I'm a PhD student at UT Austin and a recipient of the <a href="https://www.nsfgrfp.org/" target="_blank" rel="noopener noreferrer">NSF Graduate Research Fellowship (GRFP)</a>. I obtained my Bachelor's and Master's from UC Berkeley, advised by <a href="https://people.eecs.berkeley.edu/~kanazawa/">Angjoo Kanazawa</a>. My interests include computer graphics, 3D computer vision, scene reconstruction, human motion/humanoid robotics, and machine learning.
           </p>
           <p>
             Currently, I'm an Applied Scientist intern at Amazon's Frontier Intelligence and Robotics Lab working on humanoid robotics. I'm also a contributor and developer for <a href="https://docs.nerf.studio/">Nerfstudio</a>, an open source project in the Berkeley AI Research (BAIR) lab for developing and  3D reconstruction methods such as Neural Radiance Fields and Gaussian Splatting. 
@@ -59,7 +59,7 @@ const AboutMe = () => {
               <div className="publication-links">
                 <a href="https://viser.studio/main/" target="_blank" rel="noopener noreferrer">Website</a>
                 <span className="link-separator">|</span>
-                <a href="https://arxiv.org/pdf/2507.22885" target="_blank" rel="noopener noreferrer">Paper - Arxiv 2025</a>
+                <a href="https://arxiv.org/pdf/2507.22885" target="_blank" rel="noopener noreferrer">Paper - RSS 2026</a>
               </div>
               <p className="publication-description">
                 A Python library for creating and manipulating 3D visualizations for computer vision and robotics in a web-based interface.
