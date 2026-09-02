@@ -67,7 +67,14 @@ const AboutMe = () => {
           {/* VideoMimic paper */}
           <div className="publication-block">
             <div className="publication-thumbnail">
-              <img src={process.env.PUBLIC_URL + '/VideoMimicThumbnail.png'} alt="VideoMimic thumbnail" />
+              <video
+                src={process.env.PUBLIC_URL + '/VideoMimic.mp4'}
+                alt="VideoMimic demo video"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
             </div>
             <div className="publication-content">
               <h3 className="publication-title">
